@@ -21,11 +21,15 @@ ANRLabCharacter::ANRLabCharacter()
 
 void ANRLabCharacter::BeginPlay()
 {
-	Super::BeginPlay();	
+	Super::BeginPlay();
+	
+	PrintIsLocallyControlled();	
 }
 
 void ANRLabCharacter::Fire()
 {
+	PrintIsLocallyControlled();
+	
 	if (!ProjectileClass) return;
 	
 	SpawnProjectile();
@@ -42,5 +46,14 @@ void ANRLabCharacter::SpawnProjectile()
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, FireSpawnLocation, FireSpawnRotation, Params);
+}
+
+void ANRLabCharacter::PrintIsLocallyControlled() const
+{
+	const bool bLocallyControlled = IsLocallyControlled();
+	
+	FColor Color = bLocallyControlled ? FColor::Green : FColor::Red;
+	const FString Message = FString::Printf(TEXT("[%hs] Locally Controlled? %s"), __FUNCTION__, IsLocallyControlled() ? TEXT("Yes") : TEXT("No"));
+	GEngine->AddOnScreenDebugMessage(-1, 20, Color, *Message);
 }
 
