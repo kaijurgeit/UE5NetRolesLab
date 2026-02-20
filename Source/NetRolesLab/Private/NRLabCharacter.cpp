@@ -22,13 +22,11 @@ ANRLabCharacter::ANRLabCharacter()
 void ANRLabCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	PrintIsLocallyControlled();	
 }
 
 void ANRLabCharacter::Fire()
 {
-	PrintIsLocallyControlled();
+	if (!HasAuthority()) return;
 	
 	if (!ProjectileClass) return;
 	

@@ -29,6 +29,11 @@ void ANRLabPlayerController::SetupInputComponent()
 
 void ANRLabPlayerController::Input_Fire()
 {
+	Server_Fire();
+}
+
+void ANRLabPlayerController::Server_Fire_Implementation()
+{
 	if (ANRLabCharacter* ControlledPawn = Cast<ANRLabCharacter>(GetPawn()))
 	{
 		ControlledPawn->Fire();
