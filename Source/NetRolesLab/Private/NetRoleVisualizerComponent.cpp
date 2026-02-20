@@ -45,14 +45,23 @@ void UNetRoleVisualizerComponent::VisualizeLocalNetRole()
 
 void UNetRoleVisualizerComponent::EnsureMaterial()
 {
-	if (MeshMaterial) return;
+	if (MeshMaterial0) return;
 
 	// Set Dynamic Material to Mesh
-	UMaterialInterface* BaseMat = Mesh->GetMaterial(0);
-	if (!BaseMat) return;
+	UMaterialInterface* BaseMat0 = Mesh->GetMaterial(0);
+	if (!BaseMat0) return;
 
-	MeshMaterial = UMaterialInstanceDynamic::Create(BaseMat, this);
-	Mesh->SetMaterial(0, MeshMaterial);
+	MeshMaterial0 = UMaterialInstanceDynamic::Create(BaseMat0, this);
+	Mesh->SetMaterial(0, MeshMaterial0);
+	
+	if (MeshMaterial1) return;
+
+	// Set Dynamic Material to Mesh
+	UMaterialInterface* BaseMat1 = Mesh->GetMaterial(1);
+	if (!BaseMat1) return;
+
+	MeshMaterial1 = UMaterialInstanceDynamic::Create(BaseMat1, this);
+	Mesh->SetMaterial(1, MeshMaterial1);
 }
 
 void UNetRoleVisualizerComponent::Visualize(FText Text, FColor Color)
@@ -65,9 +74,14 @@ void UNetRoleVisualizerComponent::Visualize(FText Text, FColor Color)
 	}
 	
 	// Change Material Color
-	if (MeshMaterial)
+	if (MeshMaterial0)
 	{
-		MeshMaterial->SetVectorParameterValue(FName("Paint Tint"), Color.ReinterpretAsLinear());	
+		MeshMaterial0->SetVectorParameterValue(FName("Paint Tint"), Color.ReinterpretAsLinear());	
+	}
+
+	if (MeshMaterial1)
+	{
+		MeshMaterial1->SetVectorParameterValue(FName("Paint Tint"), Color.ReinterpretAsLinear());	
 	}
 }
 

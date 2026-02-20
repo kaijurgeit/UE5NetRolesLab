@@ -35,5 +35,8 @@ private:
 	TObjectPtr<UTextRenderComponent> TextRender;
 	
 	UPROPERTY()
-	TObjectPtr<UMaterialInstanceDynamic> MeshMaterial;
+	TObjectPtr<UMaterialInstanceDynamic> MeshMaterial0;
+	
+	UPROPERTY()
+	TObjectPtr<UMaterialInstanceDynamic> MeshMaterial1;
 };
