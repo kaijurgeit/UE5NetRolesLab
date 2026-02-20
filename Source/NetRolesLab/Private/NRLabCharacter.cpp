@@ -24,3 +24,23 @@ void ANRLabCharacter::BeginPlay()
 	Super::BeginPlay();	
 }
 
+void ANRLabCharacter::Fire()
+{
+	if (!ProjectileClass) return;
+	
+	SpawnProjectile();
+}
+
+void ANRLabCharacter::SpawnProjectile()
+{
+	FVector FireSpawnLocation = GetActorLocation() + GetActorForwardVector() * 100.f;
+	FRotator FireSpawnRotation = GetActorRotation();
+
+	FActorSpawnParameters Params;
+	Params.Owner = this;
+	Params.Instigator = this;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	GetWorld()->SpawnActor<AActor>(ProjectileClass, FireSpawnLocation, FireSpawnRotation, Params);
+}
+
