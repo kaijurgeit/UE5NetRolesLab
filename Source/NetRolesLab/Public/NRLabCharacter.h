@@ -32,6 +32,7 @@ public:
 	
 private:
 	void SpawnProjectile();
+	void PrintIsLocallyControlled() const;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AActor> ProjectileClass;
