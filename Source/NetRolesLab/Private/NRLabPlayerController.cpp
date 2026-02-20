@@ -6,12 +6,19 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "NRLabCharacter.h"
+#include "Blueprint/UserWidget.h"
 
 class ANRLabCharacter;
 
 void ANRLabPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	if (IsLocalController() && HUDWidgetClass)
+	{
+		HUDWidget = CreateWidget(this, HUDWidgetClass);
+		HUDWidget->AddToViewport();
+	}
 }
 
 void ANRLabPlayerController::SetupInputComponent()

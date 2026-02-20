@@ -16,6 +16,7 @@ class NETROLESLAB_API ANRLabCharacter : public ACharacter
 
 public:
 	ANRLabCharacter();
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -26,6 +27,10 @@ private:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UNetRoleVisualizerComponent> NetRoleVisualizer;
+	
+protected:
+	UPROPERTY(BlueprintReadOnly, Replicated)
+	int32 Ammo = 5;
 	
 public:
 	void Fire();
