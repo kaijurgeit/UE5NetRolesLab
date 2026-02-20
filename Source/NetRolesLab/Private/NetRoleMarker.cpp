@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AuthorityMarker.h"
+#include "NetRoleMarker.h"
 
 #include "Components/TextRenderComponent.h"
 
 
-AAuthorityMarker::AAuthorityMarker()
+ANetRoleMarker::ANetRoleMarker()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -19,9 +19,16 @@ AAuthorityMarker::AAuthorityMarker()
 	TextRender->SetupAttachment(Mesh);
 	TextRender->SetWorldSize(42);
 	TextRender->SetHorizontalAlignment(EHorizTextAligment::EHTA_Center);
+
+	NetRoleColors = {
+		{ ROLE_Authority, FColor::Red },
+		{ ROLE_AutonomousProxy, FColor::Green },
+		{ ROLE_SimulatedProxy, FColor::Blue },
+		{ ROLE_None, FColor::White }
+	};
 }
 
-void AAuthorityMarker::BeginPlay()
+void ANetRoleMarker::BeginPlay()
 {
 	Super::BeginPlay();
 	
@@ -29,22 +36,20 @@ void AAuthorityMarker::BeginPlay()
 	check(TextRender);
 	
 	EnsureMaterial();
-	VisualizeHasAuthority();
+	VisualizeLocalNetRole();
 }
 
-void AAuthorityMarker::VisualizeHasAuthority()
+void ANetRoleMarker::VisualizeLocalNetRole()
 {
-	if (HasAuthority())
-	{
-		Visualize(FText::FromString("Has Authority"), FColor::Red);
-	}
-	else
-	{		
-		Visualize(FText::FromString("Doesn't have Authority"), FColor::Black);
-	}
+	const ENetRole NetRole = GetLocalRole();
+	const FColor* Color = NetRoleColors.Find(NetRole);
+	
+	if (!Color) return;
+
+	Visualize(NetRoleToText(NetRole), *Color);
 }
 
-void AAuthorityMarker::EnsureMaterial()
+void ANetRoleMarker::EnsureMaterial()
 {
 	if (MeshMaterial) return;
 
@@ -56,7 +61,7 @@ void AAuthorityMarker::EnsureMaterial()
 	Mesh->SetMaterial(0, MeshMaterial);
 }
 
-void AAuthorityMarker::Visualize(FText Text, FColor Color)
+void ANetRoleMarker::Visualize(FText Text, FColor Color)
 {
 	// Change Text
 	if (TextRender)
@@ -70,5 +75,11 @@ void AAuthorityMarker::Visualize(FText Text, FColor Color)
 	{
 		MeshMaterial->SetVectorParameterValue(FName("Paint Tint"), Color.ReinterpretAsLinear());	
 	}
+}
+
+FText ANetRoleMarker::NetRoleToText(ENetRole Role)
+{
+	const FString EnumString = StaticEnum<ENetRole>()->GetNameStringByValue((int64)Role);
+	return FText::FromString(EnumString);
 }
 
