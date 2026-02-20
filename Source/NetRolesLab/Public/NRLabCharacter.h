@@ -26,4 +26,13 @@ private:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UNetRoleVisualizerComponent> NetRoleVisualizer;
+	
+public:
+	void Fire();
+	
+private:
+	void SpawnProjectile();
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AActor> ProjectileClass;
 };
