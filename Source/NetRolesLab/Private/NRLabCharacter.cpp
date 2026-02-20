@@ -5,6 +5,7 @@
 
 #include "NetRoleVisualizerComponent.h"
 #include "Components/TextRenderComponent.h"
+#include "Net/UnrealNetwork.h"
 
 
 ANRLabCharacter::ANRLabCharacter()
@@ -19,6 +20,13 @@ ANRLabCharacter::ANRLabCharacter()
 	NetRoleVisualizer = CreateDefaultSubobject<UNetRoleVisualizerComponent>(TEXT("NetRoleVisualizer"));
 }
 
+void ANRLabCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(ThisClass, Ammo);
+}
+
 void ANRLabCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -29,6 +37,10 @@ void ANRLabCharacter::Fire()
 	if (!HasAuthority()) return;
 	
 	if (!ProjectileClass) return;
+	
+	if (Ammo <= 0) return;
+
+	Ammo--;
 	
 	SpawnProjectile();
 }

@@ -8,6 +8,7 @@
 
 class UInputMappingContext;
 class UInputAction;
+class UUserWidget;
 
 UCLASS()
 class NETROLESLAB_API ANRLabPlayerController : public APlayerController
@@ -30,4 +31,10 @@ private:
 	
 	UFUNCTION(Server, Reliable)
 	void Server_Fire();
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> HUDWidgetClass;
+	
+	UPROPERTY()
+	TObjectPtr<UUserWidget> HUDWidget;
 };
