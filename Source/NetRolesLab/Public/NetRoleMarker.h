@@ -4,23 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "AuthorityMarker.generated.h"
+#include "NetRoleMarker.generated.h"
 
 class UTextRenderComponent;
 
 UCLASS()
-class NETROLESLAB_API AAuthorityMarker : public AActor
+class NETROLESLAB_API ANetRoleMarker : public AActor
 {
 	GENERATED_BODY()
 
 public:
-	AAuthorityMarker();
+	ANetRoleMarker();
 
 protected:
 	virtual void BeginPlay() override;
 
 public:
-	void VisualizeHasAuthority();
+	void VisualizeLocalNetRole();
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
@@ -34,5 +34,7 @@ private:
 	
 private:	
 	void EnsureMaterial();	
-	void Visualize(FText Text, FColor Color);	
+	void Visualize(FText Text, FColor Color);
+	static FText NetRoleToText(ENetRole Role);
+	TMap<TEnumAsByte<ENetRole>, FColor> NetRoleColors;	
 };
