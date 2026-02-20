@@ -7,6 +7,7 @@
 #include "NetRoleMarker.generated.h"
 
 class UTextRenderComponent;
+class UNetRoleVisualizerComponent;
 
 UCLASS()
 class NETROLESLAB_API ANetRoleMarker : public AActor
@@ -19,9 +20,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:
-	void VisualizeLocalNetRole();
-
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UStaticMeshComponent> Mesh;
@@ -29,12 +27,6 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UTextRenderComponent> TextRender;
 	
-	UPROPERTY()
-	TObjectPtr<UMaterialInstanceDynamic> MeshMaterial;
-	
-private:	
-	void EnsureMaterial();	
-	void Visualize(FText Text, FColor Color);
-	static FText NetRoleToText(ENetRole Role);
-	TMap<TEnumAsByte<ENetRole>, FColor> NetRoleColors;	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UNetRoleVisualizerComponent> NetRoleVisualizer;
 };
