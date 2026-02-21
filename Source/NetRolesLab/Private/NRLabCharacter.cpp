@@ -4,6 +4,7 @@
 #include "NRLabCharacter.h"
 
 #include "NetRoleVisualizerComponent.h"
+#include "NRLabGameState.h"
 #include "Components/TextRenderComponent.h"
 #include "Net/UnrealNetwork.h"
 
@@ -20,16 +21,12 @@ ANRLabCharacter::ANRLabCharacter()
 	NetRoleVisualizer = CreateDefaultSubobject<UNetRoleVisualizerComponent>(TEXT("NetRoleVisualizer"));
 }
 
-void ANRLabCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	
-	DOREPLIFETIME(ThisClass, Ammo);
-}
-
 void ANRLabCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	GameState = GetWorld()->GetGameState<ANRLabGameState>();
+	check(GameState);
 }
 
 void ANRLabCharacter::Fire()
@@ -38,9 +35,7 @@ void ANRLabCharacter::Fire()
 	
 	if (!ProjectileClass) return;
 	
-	if (Ammo <= 0) return;
-
-	Ammo--;
+	GameState->DecrementSharedAmmo();
 	
 	SpawnProjectile();
 }
