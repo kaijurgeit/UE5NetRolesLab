@@ -9,6 +9,8 @@
 class UTextRenderComponent;
 class UNetRoleVisualizerComponent;
 class ANRLabGameState;
+class UWidgetComponent;
+class UUserWidget;
 
 UCLASS()
 class NETROLESLAB_API ANRLabCharacter : public ACharacter
@@ -28,6 +30,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UNetRoleVisualizerComponent> NetRoleVisualizer;
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UWidgetComponent> PlayerWidgetComponent;
+	
 public:
 	void Fire();
 	
@@ -37,7 +42,10 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AActor> ProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> PlayerWidgetClass;
 	
 	UPROPERTY()
-	TObjectPtr<ANRLabGameState> GameState;
+	TObjectPtr<UUserWidget> PlayerWidget;
 };

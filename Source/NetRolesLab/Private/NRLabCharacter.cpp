@@ -5,7 +5,9 @@
 
 #include "NetRoleVisualizerComponent.h"
 #include "NRLabGameState.h"
+#include "NRLabPlayerState.h"
 #include "Components/TextRenderComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -19,24 +21,25 @@ ANRLabCharacter::ANRLabCharacter()
 	TextRender->SetHorizontalAlignment(EHorizTextAligment::EHTA_Center);
 
 	NetRoleVisualizer = CreateDefaultSubobject<UNetRoleVisualizerComponent>(TEXT("NetRoleVisualizer"));
+		
+	PlayerWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("PlayerWidget"));
+	PlayerWidgetComponent->SetupAttachment(GetMesh());
 }
 
 void ANRLabCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	GameState = GetWorld()->GetGameState<ANRLabGameState>();
-	check(GameState);
 }
 
 void ANRLabCharacter::Fire()
 {
-	if (!HasAuthority()) return;
-	
+	if (!HasAuthority()) return;	
 	if (!ProjectileClass) return;
 	
-	GameState->DecrementSharedAmmo();
+	ANRLabPlayerState* NRLabPlayerState = GetPlayerState<ANRLabPlayerState>();
+	if (!NRLabPlayerState) return;
 	
+	NRLabPlayerState->DecrementPlayerAmmo();
 	SpawnProjectile();
 }
 
