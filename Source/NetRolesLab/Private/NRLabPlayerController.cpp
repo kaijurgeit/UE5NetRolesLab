@@ -13,12 +13,6 @@ class ANRLabCharacter;
 void ANRLabPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if (IsLocalController() && HUDWidgetClass)
-	{
-		HUDWidget = CreateWidget(this, HUDWidgetClass);
-		HUDWidget->AddToViewport();
-	}
 }
 
 void ANRLabPlayerController::SetupInputComponent()

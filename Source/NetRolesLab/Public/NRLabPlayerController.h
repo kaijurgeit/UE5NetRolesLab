@@ -31,10 +31,4 @@ private:
 	
 	UFUNCTION(Server, Reliable)
 	void Server_Fire();
-
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UUserWidget> HUDWidgetClass;
-	
-	UPROPERTY()
-	TObjectPtr<UUserWidget> HUDWidget;
 };
