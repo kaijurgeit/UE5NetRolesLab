@@ -21,6 +21,7 @@ public:
 	FOnPlayerAmmoUpdate OnPlayerAmmoUpdate;
 
 	void DecrementPlayerAmmo();
+	int32 GetPlayerAmmo() const { return PlayerAmmo; }
 	
 protected:
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_PlayerAmmo)

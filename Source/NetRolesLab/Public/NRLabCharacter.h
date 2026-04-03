@@ -22,6 +22,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
+
 
 private:	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
@@ -36,9 +39,14 @@ private:
 public:
 	void Fire();
 	
+protected:
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnPlayerStateReady();
+	
 private:
 	void SpawnProjectile();
 	void PrintIsLocallyControlled() const;
+	void TryInitializeWidget();
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AActor> ProjectileClass;
@@ -48,4 +56,6 @@ private:
 	
 	UPROPERTY()
 	TObjectPtr<UUserWidget> PlayerWidget;
+	
+	bool bIsWidgetInitialized;
 };
