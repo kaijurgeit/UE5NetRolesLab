@@ -29,6 +29,28 @@ ANRLabCharacter::ANRLabCharacter()
 void ANRLabCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	if (PlayerWidgetComponent)
+	{
+		PlayerWidgetComponent->InitWidget();
+	}
+	TryInitializeWidget();
+}
+
+void ANRLabCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	
+	// Runs on Server - PlayerStates guarantee to exist
+	TryInitializeWidget();
+}
+
+void ANRLabCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	
+	// Runs on Clients - PlayerStates guarantee to exist
+	TryInitializeWidget();
 }
 
 void ANRLabCharacter::Fire()
@@ -38,6 +60,8 @@ void ANRLabCharacter::Fire()
 	
 	ANRLabPlayerState* NRLabPlayerState = GetPlayerState<ANRLabPlayerState>();
 	if (!NRLabPlayerState) return;
+	
+	if (NRLabPlayerState->GetPlayerAmmo() <= 0) return;
 	
 	NRLabPlayerState->DecrementPlayerAmmo();
 	SpawnProjectile();
@@ -65,3 +89,19 @@ void ANRLabCharacter::PrintIsLocallyControlled() const
 	GEngine->AddOnScreenDebugMessage(-1, 20, Color, *Message);
 }
 
+void ANRLabCharacter::TryInitializeWidget()
+{
+	if (bIsWidgetInitialized) return;
+	
+	ANRLabPlayerState* NRLabPlayerState = GetPlayerState<ANRLabPlayerState>();
+	if (!NRLabPlayerState) return;
+
+	if (!PlayerWidgetComponent) return;
+
+	UUserWidget* Widget = PlayerWidgetComponent->GetUserWidgetObject();
+	if (!Widget) return;
+	
+	bIsWidgetInitialized = true;
+
+	OnPlayerStateReady();
+}
